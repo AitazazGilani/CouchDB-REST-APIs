@@ -1,8 +1,8 @@
 version: '3'
 services:
- severA:
+ rest-level2:
   image: node:latest
-  container_name: nodecouch
+  container_name: serverA
   ports:
    - "80:8080"
   command: ["bin/bash"]
@@ -12,10 +12,10 @@ services:
    - couchdb1 
   stdin_open: true
   tty: true
-
-  severB:
+  
+ rest-level3:
     image: node:latest
-    container_name: nodecouch
+    container_name: serverB
     ports:
     - "81:8080"
     command: ["bin/bash"]
