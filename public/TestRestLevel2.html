@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Page Title</title>
+  </head>
+  <body>
+    <form>
+        <label for="topic-name">Topic Name:</label><br>
+        <input type="text" id="topic-name" name="topic-name"><br>
+      
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message"></textarea><br>
+      
+        <label for="message-type">Message Type:</label><br>
+        <select id="message-type" name="message-type">
+          <option value="post">Post</option>
+          <option value="comment">Comment</option>
+        </select><br>
+      
+        <div id="post-id-field" style="display:none;">
+          <label for="post-id">Post ID:</label><br>
+          <input type="text" id="post-id" name="post-id"><br>
+        </div>
+      
+        <button type="submit">Submit</button>
+      </form>
+
+
+</body>
+</html>
