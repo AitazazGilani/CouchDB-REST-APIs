@@ -16,15 +16,6 @@ var nano = require('nano')('http://admin:admin@couchdb1:5984');
 var posts = nano.use('postsdb');
 var comments = nano.use('commentsdb');
 
-// Get a list of all posts in the database
-posts.list((err, body) => {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log(body.rows)
-    }
-  })
-
 
 //lists all the posts
 app.get('/posts', function (req, res) {
@@ -49,7 +40,7 @@ app.get('/comments', function (req, res) {
 });
 
 
-//add ID
+
 // Create a new post
 app.post('/posts', (req, res) => {
     const newPost = {

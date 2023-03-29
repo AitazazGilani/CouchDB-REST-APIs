@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Level 3 REST</title>
+  </head>
+  <body onload="refresh()">
+    <h1>Post a new Message or Comment</h1>
+    <form>
+        <label for="topic-name">Topic Name:</label><br>
+        <input type="text" id="topic-name" name="topic-name"><br>
+  
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message"></textarea><br>
+  
+        <label for="message-type">Message Type:</label><br>
+        <select id="message-type" name="message-type" onchange="showPostIdField()">
+          <option value="post">Post</option>
+          <option value="comment">Comment</option>
+        </select><br>
+  
+        <div id="post-id-field" style="display:none;">
+          <label for="post-id">Post ID:</label><br>
+          <input type="text" id="post-id" name="post-id"><br>
+        </div>
+  
+        <button type="submit" onclick="addPost()">Submit Post</button>
+        <button type="submit" onclick="addComment()">Submit Comment</button>
+      </form>
+      <div>
+        <h1>URL reference</h1>
+            <ul>
+                <li>Getting or posting posts: /posts</li>
+                <li>Getting a post by id: /posts/:id</li>
+                <li>Getting all comments: /comments</li>
+                <li>Getting or Posting a comment by post id: /posts/:id/comments </li>
+              </ul>
+      </div>
+      <div>
+        <h1>All Posts</h1>
+        <pre id="OutputPosts"></pre>
+        <h1>All Comments</h1>
+        <pre id="OutputComments"></pre>
+      </div>
+
+</body>
+
+<script>
+  function showPostIdField() {
+    var messageType = document.getElementById("message-type").value;
+    var postIdField = document.getElementById("post-id-field");
+
+    if (messageType === "comment") {
+      postIdField.style.display = "block";
+    } else {
+      postIdField.style.display = "none";
+    }
+  }
+  
+  function addPost() {
+    fetch('/posts', {
+        method: 'POST',
+        body: new URLSearchParams({
+            Topic: document.getElementById("topic-name").value,
+            PostData: document.getElementById("message").value
+        }).toString(),
+        headers: {"Content-type": "application/x-www-form-urlencoded"}
+    })
+    .then(response => response.json())
+    .catch(error => console.error(error))
+    //alert("New post created");
+    }
+
+    function addComment() {
+        var id = document.getElementById("post-id").value
+        var url = '/posts/' +id+'/comments';
+    fetch(url, {
+        method: 'POST',
+        body: new URLSearchParams({
+            postID: document.getElementById("post-id").value,
+            commentText: document.getElementById("message").value
+        }).toString(),
+        headers: {"Content-type": "application/x-www-form-urlencoded"}
+    })
+    .then(response => response.json())
+    .then(postTitle => console.log(postTitle))
+    .catch(error => console.error(error))
+    //alert("New post created");
+    }
+
+    function getCommentsByID() {
+        var id = document.getElementById("post-id-2").value
+        var url = '/posts/' +id+'/comments';
+        fetch(url, {
+            method: 'GET',
+            body: new URLSearchParams({
+                id : document.getElementById("post-id-2").value,
+            }).toString(),
+            headers: {"Content-type": "application/x-www-form-urlencoded"}
+        })
+        .then(response => response.json())
+        .then(postTitle => console.log(postTitle))
+        .catch(error => console.error(error))
+        //alert("New post created");
+    }
+
+
+   function getPosts(){
+    fetch('/posts', {
+        method: 'GET'
+    })
+    .then(response =>response.json())
+    .then(data => {document.getElementById("OutputPosts").innerHTML = JSON.stringify(data,undefined,2)})
+    .catch(error => console.error(error))
+  }
+
+  function getComments(){
+    fetch('/comments', {
+        method: 'GET'
+    })
+    .then(response =>response.json())
+    .then(data => {document.getElementById("OutputComments").innerHTML = JSON.stringify(data,undefined,2)})
+    .catch(error => console.error(error))
+  }
+  function refresh(){
+    getPosts();
+    getComments();
+  }
+</script>
+</html>
