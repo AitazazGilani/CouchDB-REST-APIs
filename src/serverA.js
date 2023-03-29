@@ -25,8 +25,9 @@ posts.list((err, body) => {
     }
   })
 
+
 //lists all the posts
-app.get('/getposts', function (req, res) {
+app.get('/posts', function (req, res) {
     posts.list({ include_docs: true },function(err, result) {
         if (err) {
             return res.status(500).send('Error getting posts');
@@ -37,7 +38,7 @@ app.get('/getposts', function (req, res) {
 });
 
 //lists all the comments
-app.get('/getcomments', function (req, res) {
+app.get('/comments', function (req, res) {
     comments.list({ include_docs: true },function(err, result) {
         if(err){
             return res.status(500).send('Error getting comments');

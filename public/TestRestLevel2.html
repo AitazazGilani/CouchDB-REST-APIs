@@ -24,10 +24,14 @@
           <input type="text" id="post-id" name="post-id"><br>
         </div>
   
-        <button type="submit" onclick="fetchPosts()">Submit</button>
+        <button type="submit" onclick="addPost()">Submit Post</button>
+        <button type="submit" onclick="addComment()">Submit Comment</button>
       </form>
-      <div id="posts-table">
-          <p id="Output"> </p>
+      <div>
+        <h1>Posts</h1>
+        <p id="OutputPosts"></p>
+        <h1>Comments</h1>
+        <p id="OutputComments"></p>
       </div>
 </body>
 
@@ -43,16 +47,53 @@
     }
   }
   
-  function getPosts(){
-    fetch('/getPosts', {
-        method: 'GET'
+  function addPost() {
+    fetch('/posts', {
+        method: 'POST',
+        body: new URLSearchParams({
+            Topic: document.getElementById("topic-name").value,
+            PostData: document.getElementById("message").value
+        }).toString(),
+        headers: {"Content-type": "application/x-www-form-urlencoded"}
     })
     .then(response => response.json())
-    .then(data => {document.getElementById("Output").innerHTML =
-    JSON.stringify(data)})
-    .catch(error => console.error(error))       
+    .then(postTitle => console.log(postTitle))
+    .catch(error => console.error(error))
+    //alert("New post created");
+    }
+
+    function addComment() {
+    fetch('/comments', {
+        method: 'POST',
+        body: new URLSearchParams({
+            postID: document.getElementById("post-id").value,
+            commentText: document.getElementById("message").value
+        }).toString(),
+        headers: {"Content-type": "application/x-www-form-urlencoded"}
+    })
+    .then(response => response.json())
+    .then(postTitle => console.log(postTitle))
+    .catch(error => console.error(error))
+    //alert("New post created");
+    }
+   function getPosts(){
+    fetch('/posts', {
+        method: 'GET'
+    })
+    .then(response =>response.json())
+    .then(data => {document.getElementById("OutputPosts").innerHTML = JSON.stringify(data)})
+    .catch(error => console.error(error))
+  }
+
+  function getComments(){
+    fetch('/comments', {
+        method: 'GET'
+    })
+    .then(response =>response.json())
+    .then(data => {document.getElementById("OutputComments").innerHTML = JSON.stringify(data)})
+    .catch(error => console.error(error))
   }
   getPosts();
-
+  getComments();
 </script>
 </html>
