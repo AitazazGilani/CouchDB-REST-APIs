@@ -2,30 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Page Title</title>
+    <title>Level 2 REST</title>
   </head>
   <body>
+    <h1>Post Messages</h1>
     <form>
         <label for="topic-name">Topic Name:</label><br>
         <input type="text" id="topic-name" name="topic-name"><br>
-      
+  
         <label for="message">Message:</label><br>
         <textarea id="message" name="message"></textarea><br>
-      
+  
         <label for="message-type">Message Type:</label><br>
-        <select id="message-type" name="message-type">
+        <select id="message-type" name="message-type" onchange="showPostIdField()">
           <option value="post">Post</option>
           <option value="comment">Comment</option>
         </select><br>
-      
+  
         <div id="post-id-field" style="display:none;">
           <label for="post-id">Post ID:</label><br>
           <input type="text" id="post-id" name="post-id"><br>
         </div>
-      
-        <button type="submit">Submit</button>
+  
+        <button type="submit" onclick="fetchPosts()">Submit</button>
       </form>
-
-
+      <div id="posts-table">
+          <p id="Output"> </p>
+      </div>
 </body>
+
+<script>
+  function showPostIdField() {
+    var messageType = document.getElementById("message-type").value;
+    var postIdField = document.getElementById("post-id-field");
+
+    if (messageType === "comment") {
+      postIdField.style.display = "block";
+    } else {
+      postIdField.style.display = "none";
+    }
+  }
+  
+  function getPosts(){
+    fetch('/getPosts', {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {document.getElementById("Output").innerHTML =
+    JSON.stringify(data)})
+    .catch(error => console.error(error))       
+  }
+  getPosts();
+
+</script>
 </html>

@@ -48,12 +48,12 @@ app.get('/getcomments', function (req, res) {
 });
 
 
-
+//add ID
 // Create a new post
 app.post('/posts', (req, res) => {
     const newPost = {
-      topic: req.body.Topic,
-      data: req.body.PostData
+      PostTopic: req.body.Topic,
+      PostData: req.body.PostData
     };
     posts.insert(newPost, (err, result) => {
       if (err) {
